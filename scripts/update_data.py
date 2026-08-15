@@ -67,7 +67,7 @@ MAX_ITEMS = int(os.environ.get("MAX_ITEMS", "300"))
 REQUEST_TIMEOUT = 20
 USER_AGENT = (
     "KumamotoEarthquakeSupportBot/1.0 "
-    "(+https://github.com/ ; 支援情報自動収集ポータル用ボット; 収集頻度: 1日1回)"
+    "(+https://github.com/yyymkto/kumamoto-support-portal)"
 )
 
 logging.basicConfig(

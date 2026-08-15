@@ -1,57 +1,13 @@
 {
-  "last_updated": "2026-08-15T09:00:00+09:00",
-  "generated_by": "scripts/update_data.py (manual seed - will be overwritten by GitHub Actions)",
+  "last_updated": "2026-08-15T09:41:06.816557+09:00",
+  "generated_by": "scripts/update_data.py",
   "items": [
-    {
-      "id": "seed-001",
-      "title": "令和8年熊本地震に伴う災害に関して被災中小企業・小規模事業者支援措置",
-      "category": [
-        "中小企業・事業者"
-      ],
-      "region": [
-        "熊本県全域",
-        "宇城市"
-      ],
-      "organization": "経済産業省 / 中小企業基盤整備機構",
-      "summary": "災害救助法が適用された熊本県21市町村（宇城市を含む）の中小企業・小規模事業者を対象に、日本政策金融公庫・商工中金・商工会議所・九州経済産業局などに特別相談窓口を設置。災害復旧貸付、セーフティネット保証4号の適用、既往債務の返済条件緩和などを実施している。",
-      "target": "熊本県内（宇城市含む）の中小企業・小規模事業者",
-      "deadline": null,
-      "source_url": "https://j-net21.smrj.go.jp/solution/bcp-disaster-response/kumamoto.html",
-      "source_name": "J-Net21（中小企業ビジネス支援サイト）",
-      "published_date": "2026-07-29",
-      "collected_at": "2026-08-15T09:00:00+09:00",
-      "status": "active",
-      "sub_category": [
-        "資金繰り・融資"
-      ]
-    },
-    {
-      "id": "seed-002",
-      "title": "令和8年熊本地震に関する中小企業者向け相談窓口の開設",
-      "category": [
-        "中小企業・事業者"
-      ],
-      "region": [
-        "熊本県全域"
-      ],
-      "organization": "熊本商工会議所 / 八代商工会議所 ほか",
-      "summary": "熊本商工会議所・八代商工会議所などが、地震で被災した事業者向けの経営・金融相談窓口を開設。resuming事業再建に関する相談を無料で受け付けている。",
-      "target": "地震で被災した中小企業・商店・事業者",
-      "deadline": null,
-      "source_url": "https://j-net21.smrj.go.jp/news/",
-      "source_name": "J-Net21 支援情報ヘッドライン",
-      "published_date": "2026-08-06",
-      "collected_at": "2026-08-15T09:00:00+09:00",
-      "status": "active",
-      "sub_category": [
-        "相談窓口"
-      ]
-    },
     {
       "id": "seed-003",
       "title": "住宅の被害拡大を防ぐための緊急修理（ブルーシート展張等）制度",
       "category": [
-        "生活再建"
+        "生活再建",
+        "住まい"
       ],
       "region": [
         "熊本県全域",
@@ -66,39 +22,34 @@
       "source_name": "熊本県ホームページ",
       "published_date": "2026-08-12",
       "collected_at": "2026-08-15T09:00:00+09:00",
-      "status": "active",
-      "sub_category": [
-        "住まい"
-      ]
+      "status": "active"
     },
     {
-      "id": "seed-004",
-      "title": "宇城市災害ボランティアセンターの開設",
+      "id": "seed-002",
+      "title": "令和8年熊本地震に関する中小企業者向け相談窓口の開設",
       "category": [
-        "生活再建"
+        "中小企業・事業者",
+        "相談窓口"
       ],
       "region": [
-        "宇城市",
-        "小川町"
+        "熊本県全域"
       ],
-      "organization": "宇城市社会福祉協議会",
-      "summary": "宇城市内で被災家屋の片付けなどを行う災害ボランティアセンターを設置。電話（080-5063-9672 / 080-5063-9989）で活動の申し込み・問い合わせを受け付けている。",
-      "target": "宇城市内（小川町含む）で被災した住民",
+      "organization": "熊本商工会議所 / 八代商工会議所 ほか",
+      "summary": "熊本商工会議所・八代商工会議所などが、地震で被災した事業者向けの経営・金融相談窓口を開設。resuming事業再建に関する相談を無料で受け付けている。",
+      "target": "地震で被災した中小企業・商店・事業者",
       "deadline": null,
-      "source_url": "https://www.city.uki.kumamoto.jp/toppage/kinkyu/2606699",
-      "source_name": "宇城市公式ホームページ",
-      "published_date": "2026-08-12",
+      "source_url": "https://j-net21.smrj.go.jp/news/",
+      "source_name": "J-Net21 支援情報ヘッドライン",
+      "published_date": "2026-08-06",
       "collected_at": "2026-08-15T09:00:00+09:00",
-      "status": "active",
-      "sub_category": [
-        "ボランティア・生活支援"
-      ]
+      "status": "active"
     },
     {
       "id": "seed-005",
       "title": "小川防災拠点センターでのシャワー機の利用について",
       "category": [
-        "生活再建"
+        "生活再建",
+        "避難生活支援"
       ],
       "region": [
         "宇城市",
@@ -112,10 +63,28 @@
       "source_name": "宇城市公式ホームページ",
       "published_date": "2026-08-05",
       "collected_at": "2026-08-15T09:00:00+09:00",
-      "status": "active",
-      "sub_category": [
-        "避難生活支援"
-      ]
+      "status": "active"
+    },
+    {
+      "id": "seed-001",
+      "title": "令和8年熊本地震に伴う災害に関して被災中小企業・小規模事業者支援措置",
+      "category": [
+        "中小企業・事業者",
+        "資金繰り・融資"
+      ],
+      "region": [
+        "熊本県全域",
+        "宇城市"
+      ],
+      "organization": "経済産業省 / 中小企業基盤整備機構",
+      "summary": "災害救助法が適用された熊本県21市町村（宇城市を含む）の中小企業・小規模事業者を対象に、日本政策金融公庫・商工中金・商工会議所・九州経済産業局などに特別相談窓口を設置。災害復旧貸付、セーフティネット保証4号の適用、既往債務の返済条件緩和などを実施している。",
+      "target": "熊本県内（宇城市含む）の中小企業・小規模事業者",
+      "deadline": null,
+      "source_url": "https://j-net21.smrj.go.jp/solution/bcp-disaster-response/kumamoto.html",
+      "source_name": "J-Net21（中小企業ビジネス支援サイト）",
+      "published_date": "2026-07-29",
+      "collected_at": "2026-08-15T09:00:00+09:00",
+      "status": "active"
     }
   ]
 }
