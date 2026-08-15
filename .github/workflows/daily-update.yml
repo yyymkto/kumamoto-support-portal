@@ -1,0 +1,121 @@
+name: 熊本地震支援情報 自動更新・デプロイ
+
+on:
+  schedule:
+    # 毎朝 7:00 JST (UTC 22:00) に実行
+    - cron: "0 22 * * *"
+  workflow_dispatch: {} # 手動実行用ボタン
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - ".github/workflows/daily-update.yml"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    # スケジュール実行・手動実行のときだけデータ収集を行う。
+    # 通常のpush（記事修正など）ではスキップしてデータを壊さないようにする。
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    outputs:
+      changed: ${{ steps.git-check.outputs.changed }}
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Python セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 依存関係インストール
+        run: pip install -r scripts/requirements.txt
+
+      - name: 支援情報を収集・更新
+        id: run-update
+        continue-on-error: true # 失敗してもIssue起票のステップまで進めるため
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/update_data.py
+
+      - name: 変更を検出
+        id: git-check
+        run: |
+          if git diff --quiet -- public/data/support_info.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 変更をコミット・push
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config user.name "support-info-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/data/support_info.json
+          git commit -m "chore: 支援情報を自動更新 ($(date -u +'%Y-%m-%dT%H:%M:%SZ'))"
+          git push
+
+      # --- ここから: 収集に失敗した場合だけ実行される異常検知パート ---
+
+      - name: Issueテンプレート用の情報を準備
+        if: steps.run-update.outcome == 'failure'
+        run: |
+          echo "RUN_DATE=$(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M JST')" >> "$GITHUB_ENV"
+          echo "RUN_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$GITHUB_ENV"
+
+      - name: エラーをIssueとして起票（既存Issueがあれば更新）
+        if: steps.run-update.outcome == 'failure'
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          filename: .github/workflow-templates/collection-failure-issue.md
+          update_existing: true
+
+      - name: 収集処理の失敗をワークフローに反映
+        if: steps.run-update.outcome == 'failure'
+        run: |
+          echo "::error::支援情報の収集処理が失敗しました。詳細はIssueを確認してください。"
+          exit 1
+
+  build-and-deploy:
+    needs: update-data
+    if: always() && (needs.update-data.result == 'skipped' || success())
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: リポジトリをチェックアウト（最新コミット取得のため）
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: サイトを dist/ に組み立て
+        run: |
+          mkdir -p dist/data
+          cp src/index.html dist/index.html
+          cp -r public/data/. dist/data/
+
+      - name: Pages 用アーティファクトをアップロード
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: GitHub Pages にデプロイ
+        id: deployment
+        uses: actions/deploy-pages@v4
