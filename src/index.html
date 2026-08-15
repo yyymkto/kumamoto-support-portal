@@ -49,6 +49,10 @@
   }
   ::selection { background: #1D4E45; color: #F3F5F0; }
   .focus-ring:focus-visible { outline: 3px solid #1D4E45; outline-offset: 2px; }
+
+  /* チップの横スクロール時に、見た目を邪魔するスクロールバーを非表示にする */
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; height: 0; }
 </style>
 </head>
 
@@ -116,8 +120,9 @@
 
   <!-- ===== 詳細モーダル ===== -->
   <div id="modal-backdrop" class="hidden fixed inset-0 z-40 bg-ink/40 backdrop-blur-sm"></div>
-  <div id="modal" class="hidden fixed inset-x-0 bottom-0 z-50 sm:inset-0 sm:flex sm:items-center sm:justify-center">
-    <div class="bg-paper w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[85vh] overflow-y-auto shadow-2xl border border-line">
+  <!-- pointer-events-none: モーダル外側の余白部分はクリックを透過させ、背後のbackdropに届かせる（そこで閉じる処理が走る） -->
+  <div id="modal" class="hidden fixed inset-x-0 bottom-0 z-50 sm:inset-0 sm:flex sm:items-center sm:justify-center pointer-events-none">
+    <div class="pointer-events-auto bg-paper w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[85vh] overflow-y-auto shadow-2xl border border-line">
       <div class="p-5" id="modal-content"></div>
     </div>
   </div>
