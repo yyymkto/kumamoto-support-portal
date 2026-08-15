@@ -65,6 +65,8 @@ MAX_AGE_DAYS = int(os.environ.get("MAX_AGE_DAYS", "0"))
 MAX_ITEMS = int(os.environ.get("MAX_ITEMS", "300"))
 
 REQUEST_TIMEOUT = 20
+# HTTPヘッダーはASCII(latin-1)のみ許容されるため、日本語を含めないこと。
+# 連絡先や用途はリポジトリURLのみで示す。
 USER_AGENT = (
     "KumamotoEarthquakeSupportBot/1.0 "
     "(+https://github.com/yyymkto/kumamoto-support-portal)"
@@ -106,7 +108,7 @@ SOURCES: list[Source] = [
         url="https://www.city.uki.kumamoto.jp/toppage/kinkyu/2606699",
         type="html",
         default_region=["宇城市", "小川町"],
-        list_selector="#main a",
+        list_selector="a",  # サイト構造の変化に強くするため、あえて広め(a)に設定
         base_url="https://www.city.uki.kumamoto.jp",
     ),
     # 熊本県 地震関連情報ページ
@@ -115,7 +117,7 @@ SOURCES: list[Source] = [
         url="https://www.pref.kumamoto.jp/soshiki/1/274517.html",
         type="html",
         default_region=["熊本県全域", "宇城市"],
-        list_selector="#main a, .contents a",
+        list_selector="a",
         base_url="https://www.pref.kumamoto.jp",
     ),
     # J-Net21 熊本地震 特設支援情報ページ（中小企業・事業者向け）
@@ -127,16 +129,38 @@ SOURCES: list[Source] = [
         list_selector="a",
         base_url="https://j-net21.smrj.go.jp",
     ),
+    # 氷川町（宇城市の隣接自治体。同じく震度7を観測し、生活圏・商圏が重なる）
+    Source(
+        name="氷川町 令和8年熊本地震関連情報",
+        url="https://www.town.hikawa.kumamoto.jp/list00849.html",
+        type="html",
+        default_region=["氷川町"],
+        list_selector="a",
+        base_url="https://www.town.hikawa.kumamoto.jp",
+    ),
+    # 熊本市（周辺自治体の中で最大の商圏。事業者向け情報が充実している）
+    Source(
+        name="熊本市 令和8年熊本地震関連情報",
+        url="https://www.city.kumamoto.jp/list04828.html",
+        type="html",
+        default_region=["熊本市", "熊本県全域"],
+        list_selector="a",
+        base_url="https://www.city.kumamoto.jp",
+    ),
 ]
 
 # 支援情報として拾いたいキーワード（タイトル/本文フィルタ用）
 # ここに引っかからない一般ニュース（お祭り情報など）は Gemini に送る前に除外し、
 # API 呼び出しコストとノイズを削減する。
+# ※ 当初は絞りすぎて候補が少なくなっていたため、関連しそうな語をやや広めに追加している。
 RELEVANT_KEYWORDS = [
     "地震", "支援", "補助", "助成", "融資", "貸付", "相談窓口", "義援金",
     "見舞金", "罹災", "り災", "被災", "仮設", "応急", "住宅", "中小企業",
     "小規模事業者", "商店", "事業者", "生活再建", "生活再建支援", "税",
     "減免", "猶予", "ボランティア", "宇城", "小川", "氷川", "熊本地震",
+    "熊本市", "八代", "災害", "見舞", "給付", "貸出", "延長", "共済",
+    "事業再開", "復旧", "商工会議所", "商工会", "経営相談", "特別貸付",
+    "セーフティネット", "入浴", "給水", "断水", "停電", "避難所",
 ]
 
 
